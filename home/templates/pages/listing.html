@@ -1,0 +1,387 @@
+{% extends 'layouts/base_background.html' %} {% load static %} {% block title %}
+SwapShop {% endblock title %} {% block header %} {% include 'includes/nav.html' %} {% endblock header %} {% include 'includes/nav.html' %}  {% block body %} class="index-page bg-gray-200"
+{% endblock body %} {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<style>
+  .drop-container {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #555;
+    color: #444;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out, border 0.2s ease-in-out;
+  }
+
+  .drop-container:hover {
+    background: #eee;
+    border-color: #111;
+  }
+
+  .drop-container:hover .drop-title {
+    color: #222;
+  }
+
+  .drop-title {
+    color: #444;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.2s ease-in-out;
+  }
+
+  input[type="file"] {
+    width: 350px;
+    max-width: 100%;
+    color: #444;
+    padding: 5px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #555;
+  }
+
+  input[type="file"]::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #ec407a;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+  }
+
+  input[type="file"]:disabled {
+    opacity: 0.65;
+  }
+
+  input[type="file"]:disabled::file-selector-button:hover {
+    background: #ec407a;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    background: #d81b60;
+  }
+
+  ul {
+    list-style-type: none;
+    
+  }
+
+  .flex-container-for-details {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+</style>
+
+
+<header class="header-2">
+    <div class="page-header min-vh-75 relative" style="background-image: url('{% static 'img/swapshop-background2.jpg' %}')">
+      <span class="mask bg-gradient-primary opacity-4"></span>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7 text-center mx-auto">
+            <h1 class="text-white pt-3 mt-n5">{{listing.user}}'s Post</h1>
+            <p class="lead text-white mt-3">
+              {% comment %} {{listing.title}} {% endcomment %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+  <section class="my-5 py-5" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="row justify-content-center text-center my-sm-5">
+          <div class="col-lg-6">
+            <span class="badge bg-primary mb-3">Listing</span>
+            <h2 class="text-dark mb-0">{{listing.title}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="alert-area">
+    </div>
+
+    <div class="flex-container-for-details">
+      <!--Image Selector-->
+      <div class="container" style="width: 600px; min-width: 400px;">
+        <div class="row">
+          <div class="row justify-content-center text-center my-sm-5">
+            {% comment %} <form method="post" enctype="multipart/form-data" id="upload-form"> {% endcomment %}
+              {% comment %} <label for="images" class="drop-container"> {% endcomment %}
+                {% csrf_token %}
+                <img src="{{listing.image.url}}" alt="{{listing.title}}">
+              {% comment %}
+                <input
+                  type="file"
+                  id="images"
+                  accept="image/png, image/jpg, image/jpeg"
+                  required
+                />
+                {% endcomment %}
+              {% comment %} </label> {% endcomment %}
+            {% comment %} </form> {% endcomment %}
+          </div>
+        </div>
+      </div>
+
+      <!--Table of Stuff-->
+      <div class="card" style="min-width: auto; align-self: center; width: 40%;">
+        <div class="table-responsive">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">characteristics</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">types</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!--Color-->
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Name</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">{{listing.title}}</h6>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Type</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">{{listing.cType}}</h6>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Color</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">{{listing.color}}</h6>
+                  </div>
+                </td>
+              </tr>
+              
+              <!--Size-->
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Size</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">{{listing.size}}</h6>
+                  </div>
+                </td>
+              </tr>
+      
+              <!--Location-->
+              {% comment %} <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Location</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">(User Data)</h6>
+                  </div>
+                </td>
+              </tr> {% endcomment %}
+
+              <!--Description-->
+              {% comment %} <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-xs">Description</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <h6 class="mb-0 text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, nemo. <br> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia, adipisci.</h6>
+                  </div>
+                </td>
+              </tr> {% endcomment %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% if user.is_authenticated %}
+      <form id="listing-form">
+        {% csrf_token %}
+        <div class="input-group input-group-static mb-4">
+          <label for="exampleFormControlSelect1" class="ms-0">Choose Item to Trade</label>
+          <select class="form-control" id="mine-select">
+            {% for c in other %}
+              <option value="{{c.id}}">{{c.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">Trade</button>
+      </form>
+     
+    {% else %}
+    <button type="button" class="btn btn-primary btn-lg w-100" disabled>
+      Login to Trade
+    </button>
+    {% endif %}
+    
+    <br><br><br>
+
+    {% endblock content %} {% block javascripts %}
+
+    <!--  Plugin for TypedJS, full documentation here: https://github.com/inorganik/CountUp.js -->
+    <script src="{% static 'js/plugins/countup.min.js' %}"></script>
+    <script src="{% static 'js/plugins/choices.min.js' %}"></script>
+    <script src="{% static 'js/plugins/prism.min.js' %}"></script>
+    <script src="{% static 'js/plugins/highlight.min.js' %}"></script>
+    <!--  Plugin for Parallax, full documentation here: https://github.com/dixonandmoe/rellax -->
+    <script src="{% static 'js/plugins/rellax.min.js' %}"></script>
+    <!--  Plugin for TiltJS, full documentation here: https://gijsroge.github.io/tilt.js/ -->
+    <script src="{% static 'js/plugins/tilt.min.js' %}"></script>
+    <!--  Plugin for Selectpicker - ChoicesJS, full documentation here: https://github.com/jshjohnson/Choices -->
+    <script src="{% static 'js/plugins/choices.min.js' %}"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // On form submit, prevent default form submission
+        document.getElementById("listing-form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          // Get form data
+          var formData = new FormData();
+          var id = parseInt("{{listing.id}}")
+          var select = document.getElementById("mine-select");
+          var tmpvar = parseInt(select.options[select.selectedIndex].value);
+          
+          // add csrf django csrf_token
+          const csrftoken = document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+          ).value;
+    
+          formData.append("csrfmiddlewaretoken", csrftoken);
+          formData.append("id1", id);
+          formData.append("id2", tmpvar)
+    
+          $.ajax({
+            url: "{% url 'listing' id=listing.id %}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+              window.location.href = "{% url 'trades' %}";
+             
+
+            },
+          });
+            
+        });
+      });
+    </script>
+
+    <script type="text/javascript">
+      if (document.getElementById("state1")) {
+        const countUp = new CountUp(
+          "state1",
+          document.getElementById("state1").getAttribute("countTo")
+        );
+        if (!countUp.error) {
+          countUp.start();
+        } else {
+          console.error(countUp.error);
+        }
+      }
+      if (document.getElementById("state2")) {
+        const countUp1 = new CountUp(
+          "state2",
+          document.getElementById("state2").getAttribute("countTo")
+        );
+        if (!countUp1.error) {
+          countUp1.start();
+        } else {
+          console.error(countUp1.error);
+        }
+      }
+      if (document.getElementById("state3")) {
+        const countUp2 = new CountUp(
+          "state3",
+          document.getElementById("state3").getAttribute("countTo")
+        );
+        if (!countUp2.error) {
+          countUp2.start();
+        } else {
+          console.error(countUp2.error);
+        }
+      }
+    </script>
+    <script>
+      function selectColor(selected) {
+        document.getElementById("selected-color").innerHTML = selected; 
+      };
+
+      function selectTops(selected) {
+        document.getElementById("tops").innerHTML = selected; 
+      };
+
+      function selectBottoms(selected) {
+        document.getElementById("bottoms").innerHTML = selected; 
+      };
+
+      function alertUser(tradingUser) {
+        document.getElementById("alert-area").innerHTML = `
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" data-bs-dismiss="alert" class="btn btn-primary" aria-label="Close" style="float: left; margin-right: 20px; margin-top: -7px;">
+          <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+        </button>
+        <span class="alert-text" style="color: white;"><strong>` + tradingUser + `</strong> would like to trade!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`;
+      }
+    </script>
+
+    {% endblock javascripts %}
+  </section>
+</div>
