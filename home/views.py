@@ -149,6 +149,8 @@ def listing(request, id):
                 "listing" : Clothing.objects.get(id=id),
                 "other" : Clothing.objects.filter(user=request.user)
             })
+    else :
+        return redirect('login')
     return render(request, 'pages/listing.html', {
         "listing" : Clothing.objects.get(id=id),
         "other" : Clothing.objects.filter(user=request.user)
